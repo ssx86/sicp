@@ -57,3 +57,5 @@
 (print-rat (make-rat -100 350))
 (print-rat (make-rat 150 350))
 (print-rat (make-rat 150 -380))
+
+;;没有比这个更难看的版本了吧。。。
