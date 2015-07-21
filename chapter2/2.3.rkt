@@ -57,4 +57,5 @@
 (len (make-rect2 (make-point 10 40) (make-point 50 90)))
 (area (make-rect2 (make-point 10 40) (make-point 50 90)))
 
-
+;;其实没读明白题。要干嘛不太清楚。不过我这个绝对是符合我的理解的。。。
+;;只有构造函数不同而已，简直自己都说不过去。。
