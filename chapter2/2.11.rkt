@@ -40,6 +40,7 @@
                       (> (upper-bound y) 0))
                  ;;<>y
                  ;;x和y都跨越了0点，这种情况下貌似不可能用2次乘法解决这个问题
+                 ;;经过查看原文，这里是裘宗燕老师翻译的笔误，这个case中乘法就是超过2次的
                    (make-interval (min (* (lower-bound x) (upper-bound y))
                                        (* (upper-bound x) (lower-bound y)))
                                   (max (* (lower-bound x) (lower-bound y))
