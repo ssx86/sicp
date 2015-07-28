@@ -16,3 +16,15 @@
 ;;因为这一步对整个算法产生了怀疑，感觉不应该这么麻烦。实际上的确就是这样而已
 
 ;;so 思考的时候多坚持一下
+
+;;忘了保存头插法的结果？不需要坚持，因为本来就是错的。。重新写一下头插法
+(define (reverse-head-insert l)
+  (define (iter rest result)
+    (if (null? rest)
+        result
+        (iter (cdr rest) (cons (car rest) result))))
+  (iter l '()))
+
+(reverse-head-insert (list 1 4 9 16 25))
+
+;;可以过了，一次写成，可以保证理解到位了。
