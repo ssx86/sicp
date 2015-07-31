@@ -26,24 +26,29 @@
     (if (pair? structure)
         (total-weight structure)
         structure)))
-  (+ (branch-weight (left-branch x))
-     (branch-weight (right-branch x))))
-
+  (if (pair? x)
+      (+ (branch-weight (left-branch x))
+         (branch-weight (right-branch x)))
+      x))
+  
 (define test (make-mobile
-              (make-branch 10 30)
-              (make-branch 30 (make-mobile
-                               (make-branch 1 5)
-                               (make-branch 5 1)))))
+              (make-branch 10 40)
+              (make-branch 100 (make-mobile
+                               (make-branch 2 2)
+                               (make-branch 2 2)))))
 (total-weight test)
 
-;; c)暂时是错的，明天白天继续更新。不要看现在的代码。错错错
+;; c)这两天经理不集中，写了好几次才写对这个东西。回头重构一下吧，下次。
 (define (balance x)
   (define (torque branch)
-    (let ((structure (branch-structure branch)))
-    (if (pair? structure)
-        (total-weight structure)
-        (* (branch-length branch) structure))))
-  (= (torque (left-branch x))
-     (torque (right-branch x))))
+    (* (branch-length branch)
+       (total-weight (branch-structure branch))))
+  (if (not (pair? x))
+      #t
+      (and 
+       (= (torque (left-branch x))
+          (torque (right-branch x)))
+       (balance (branch-structure (left-branch x)))
+       (balance (branch-structure (right-branch x))))))
 
 (balance test)
