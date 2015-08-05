@@ -5,7 +5,7 @@
   (find-divisor x 2))
 
 (define (find-divisor x n)
-  (cond ((>= (square n) x) x)
+  (cond ((> (square n) x) x)
         ((= (remainder x n) 0) n)
         (else (find-divisor x (+ n 1)))))
 
