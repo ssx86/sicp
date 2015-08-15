@@ -40,7 +40,7 @@
   (copy-to-list tree '()))
 
 (define (union-set set1 set2)
-  (list->tree (cond ((null? set1) set2)
+  (cond ((null? set1) set2)
                     ((null? set2) set1)
                     (else (cond ((= (entry set1) (entry set2))
                                  (make-tree (entry set1)
@@ -59,8 +59,12 @@
                                             (union-set (left-branch set1)
                                                        (left-branch set2))
                                             (union-set (right-branch set1)
-                                                       (make-tree (entry set2) '() (right-branch set2))))))))))
+                                                       (make-tree (entry set2) '() (right-branch set2)))))))))
 
-(define test (union-set (list->tree '(1 2 3 4)) (list->tree '(3 4 5 6))))
+
+;;擦。耽误时间太长了。暂时放弃。
+(list->tree '(2 3 4))
+(define left (list->tree '(4)))
+(define right (list->tree '(2 3)))
+(define test (union-set 2 3))))
 test
-(tree->list test)
