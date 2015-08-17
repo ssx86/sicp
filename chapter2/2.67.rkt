@@ -54,6 +54,12 @@
                                (cadr pair))
                     (make-leaf-set (cdr pairs))))))
 
-(define tree (make-leaf-set '((A 4) (B 2) (C 1) (D 1))))
-(decode '(1 0 0) tree)
-;;暂时没看懂，回去今天就看这个。题做到2.72！！！
+(define sample-tree
+  (make-code-tree (make-leaf 'A 4)
+                   (make-code-tree
+                    (make-leaf 'B 2)
+                    (make-code-tree (make-leaf 'D 1)
+                                    (make-leaf 'C 1)))))
+
+(define sample-message '(0 1 1 0 0 1 0 1 0 1 1 1 0))
+(decode sample-message sample-tree)
