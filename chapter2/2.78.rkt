@@ -81,3 +81,5 @@
 (define x (make-scheme-number 3))
 (define y (make-scheme-number 4))
 (add x y)
+
+;;这个文件删掉了其他部分package，只留下了scheme number部分。完整版本可以看下一个文件
