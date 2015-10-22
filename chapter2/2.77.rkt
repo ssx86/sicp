@@ -181,5 +181,10 @@
 (define z (make-complex-from-real-imag 3 4))
 (magnitude z)
 
-;;出汗了。。。有空好好整理一下这几个表。现在先放过。看似已经明白了。
-;;多了一层的样子。
+;;magnitude 第一次查找到了'complex 对应的magnitude，依然是apply-generic 'magnitude, z。
+;;但是这次，数据变成了脱壳之后的z，也就是去掉了'complex.剩下'rectangular 3 . 4
+;;第二次匹配，得到了
+;;(define (magnitude z)
+;;    (sqrt (+ (square (real-part z))
+;;             (square (imag-part z)))))
+;;之后继续了real-part 'rectangular的匹配.
