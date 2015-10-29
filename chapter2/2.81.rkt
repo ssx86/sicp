@@ -213,15 +213,17 @@
                     (type2 (cadr type-tags))
                     (a1 (car args))
                     (a2 (cadr args)))
-                (let ((t1->t2 (get type1 type2))
-                      (t2->t1 (get type2 type1)))
-                  (cond (t1->t2
-                         (apply-generic op (t1->t2 a1) a2))
-                        (t2->t1
-                         (apply-generic op a1 (t2->t1 a2)))
-                        (else
-                         (error "No method for these types"
-                                (list op type-tags))))))
+                (if (eq? type1 type2)
+                    (error "No method for the same type: " (list op type-tags))
+                    (let ((t1->t2 (get type1 type2))
+                          (t2->t1 (get type2 type1)))
+                      (cond (t1->t2
+                             (apply-generic op (t1->t2 a1) a2))
+                            (t2->t1
+                             (apply-generic op a1 (t2->t1 a2)))
+                            (else
+                             (error "No method for these types"
+                                    (list op type-tags)))))))
               (error
                "No method for these types -- APPLY-GENERIC"
                (list op type-tags)))))))
@@ -390,7 +392,7 @@
 (define (scheme-number->scheme-number n) n)
 (define (complex->complex z) z)
 ;(put 'scheme-number 'scheme-number scheme-number->scheme-number)
-;;(put 'complex 'complex complex->complex)
+;(put 'complex 'complex complex->complex)
 
 ;; test cases
 (install-rectangular-package)
@@ -400,7 +402,11 @@
 (install-complex-package)
 (exp (make-scheme-number 3)
      (make-scheme-number 5))
+;;(exp (make-complex-from-real-imag 3 4)
+;;     (make-scheme-number 5))
 (exp (make-complex-from-real-imag 3 4)
-     (make-scheme-number 5))
+     (make-complex-from-real-imag 4 5))
 
 ;; a) 修改后会发生无限循环查找相同类型转换的情况
+;; b) 并没有纠正，也不能像之前一样正常工作了。
+;; c) 这么改并没有什么卵用，虽然是的确避免了进行强制的过程
