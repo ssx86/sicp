@@ -1,1 +1,60 @@
-#lang racket
+#lang r5rs
+
+(define (make-table same-key?)
+  (define (find-value x lst)
+    (cond ((null? lst) #f)
+          ((same-key? (caar lst) x) (car lst))
+          (else (find-value x (cdr lst)))))
+  (let ((local-table (list '*table*)))
+    (define (lookup keys)
+      (define (helper key-list current-table)
+        (if (null? key-list)
+            (cdr current-table)
+            (let ((subtable (assoc (car key-list) (cdr current-table))))
+              (if subtable
+                  (helper (cdr key-list) subtable)
+                  (begin
+                    (display "error, key not found\n")
+                    '())))))
+      (helper keys local-table))
+    (define (insert! keys value)
+      (define (helper current-table key-list)
+        (if (null? key-list)
+            (set-cdr! current-table value)
+            (let ((search-table (cdr current-table)))
+              (if (and (not (pair? search-table))
+                       (not (null? search-table)))
+                  (display "error, key conflicted\n")
+                  (let ((record (assoc (car key-list) search-table)))
+                    (cond
+                      ((not record)
+                       (begin
+                         (set-cdr! current-table (cons (list (car key-list)) (cdr current-table)))
+                         (helper (cadr current-table) (cdr key-list))))
+                      (else (helper record (cdr key-list)))))))))
+      (helper local-table keys))
+
+    (define (dispatch m)
+      (cond ((eq? m 'lookup-proc) lookup)
+            ((eq? m 'insert-proc!) insert!)
+            (else (display "Unknown operation -- TABLE" m))))
+    dispatch))
+
+(define operation-table (make-table (lambda (x y)
+                                      (< (abs (- x y)) 0.01))))
+(define get (operation-table 'lookup-proc))
+(define put (operation-table 'insert-proc!))
+
+(put '(1) '1)
+(put '(2) '2)
+(put '(1 2) 'c)
+(put '(3 5) 35)
+(put '(3 2 6 6) 3266)
+(put '(3 2 6 3) 3263)
+
+
+(display (get '(3 5)))
+(newline)
+(display (+ (get '(3 2 6 6)) (get '(3 2 6 3))))
+(newline)
+(display (get '(4)))
